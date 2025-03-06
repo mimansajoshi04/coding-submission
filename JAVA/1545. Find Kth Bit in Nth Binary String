@@ -1,0 +1,26 @@
+class Solution {
+    public char findKthBit(int n, int k) {
+        char[] array = new char[]{'0'};
+        char [] pattern = new char[]{'0'};
+        for(int i=1;i<n;i++){
+            var m = pattern.length;
+            array = new char[2*m+1];
+            for(int j=0;j<m;j++){
+                array[j] = pattern[j];
+                if(pattern[j]=='0')
+                    array[2*m-j] = '1';
+                else
+                    array[2*m-j] = '0';
+            }
+            array[m] = '1';
+            pattern = array;
+        }
+
+        // for(char ki:array){
+        //     System.out.println(ki);
+        // }
+        return array[k-1];
+
+
+    }
+}
