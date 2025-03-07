@@ -1,0 +1,56 @@
+class Solution {
+
+    private ArrayList<Integer> returnPrimes(int left ,int n){
+        boolean[] prime = new boolean[n+1];
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        // System.out.println(n);
+        for(int p = 2;p*p<=n;p++){
+            // System.out.print(p + "  what\n" );
+            if(!prime[p]){
+                // System.out.print(p + "  ");
+                for(int i = p*p;i<=n;i+=p)
+                    prime[i] = true;
+            }
+        }
+
+        // System.out.print("hllo");
+        if(left==1)
+            left=2;
+        for(int i=left;i<=n;i++){
+            if(!prime[i]){
+                list.add(i);
+                //System.out.print(i + " ");
+            }
+        }
+
+        //System.out.println();
+        return list;
+        
+    }
+
+    public int[] closestPrimes(int left, int right) {
+        ArrayList<Integer> primes = this.returnPrimes(left,right);
+        var n = primes.size();
+        // for(int i:primes)
+        //     System.out.print(i + " ");
+        if(n<2)
+            return new int[]{-1,-1};
+
+        var num1 = primes.get(0);
+        var num2 = primes.get(1);
+        var gap = num2-num1;
+
+        for(int i=1;i<n-1;i++){
+            //System.out.println(num1 + " "+ num2 + " "+ gap);
+            if(primes.get(i+1)-primes.get(i)<gap){
+                num1=primes.get(i);
+                num2=primes.get(i+1);
+                gap = num2-num1;
+            }
+        }
+
+        return new int[]{num1,num2};
+
+
+    }
+}
