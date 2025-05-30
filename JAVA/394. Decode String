@@ -1,0 +1,58 @@
+class Solution {
+
+    Stack<Character> stack = new Stack<Character>();
+    String answer = "";
+
+    private void decode(){
+
+        String s = "";
+
+        while(stack.peek()!='[')
+            s = stack.pop() + s;
+
+        stack.pop();
+        
+        String number = "";
+        while(!stack.isEmpty() && stack.peek()!=']' && stack.peek()<=57)
+            number = stack.pop() + number; 
+
+        int num = Integer.parseInt(number);
+        String str = "";
+        while(num>0){
+            str+=s;
+            num--;
+        }
+
+        if(!stack.isEmpty()){
+            char [] arr = str.toCharArray();
+            for(char c: arr){
+                stack.push(c);
+            }
+        }else{
+            answer+=str;
+        }
+
+
+    }
+
+    public String decodeString(String s) {
+        char[] array = s.toCharArray();
+
+        for(char i : array){
+            if(i==']'){
+                this.decode();
+            }else{
+                
+                if(i>=90 && i!='[' &&  stack.isEmpty()){
+                    answer += i;
+                }else{
+                    stack.push(i);
+                }
+                
+            }
+        }
+        
+
+        return answer;
+    }
+}
