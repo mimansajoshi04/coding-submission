@@ -1,0 +1,25 @@
+class Solution {
+    public String triangleType(int[] nums) {
+        var s1 = nums[0];
+        var s2 = nums[1];
+        var s3 = nums[2];
+
+        if(s1+s2<=s3 || s2+s3<=s1 || s3+s1<=s2)
+            return "none";
+
+        if(s1==s2 && s2==s3)
+            return "equilateral";
+
+        if(s1==s2)
+            return "isosceles";
+
+        if(s2==s3)
+            return "isosceles";
+
+        if(s1==s3)
+            return "isosceles";
+
+        return "scalene";
+
+    }
+}
