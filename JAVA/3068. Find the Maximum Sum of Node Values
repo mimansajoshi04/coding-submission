@@ -1,0 +1,25 @@
+class Solution {
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.length;
+        long baseSum = 0;
+        int[] gain = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            baseSum += nums[i];
+            gain[i] = (nums[i] ^ k) - nums[i];
+        }
+
+        Arrays.sort(gain);
+        long maxGain = 0;
+
+        long tempGain = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            tempGain += gain[i];
+            if ((n - i) % 2 == 0) { 
+                maxGain = Math.max(maxGain, tempGain);
+            }
+        }
+
+        return baseSum + maxGain;
+    }
+}
