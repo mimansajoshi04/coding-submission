@@ -1,0 +1,21 @@
+class Solution {
+    public boolean threeConsecutiveOdds(int[] arr) {
+        
+        var i=1;
+        while(i<arr.length-1){
+            var new_i=i;
+            if(arr[i]%2==1 && arr[i-1]%2==1 && arr[i+1]%2==1)
+                return true;
+            if(arr[i]%2==0)
+                new_i=i+2;
+            if(arr[i+1]%2==0)
+                new_i=i+3;
+            else
+                new_i=i+1;
+
+            i=new_i;
+        }
+
+        return false;
+    }
+}
