@@ -1,0 +1,22 @@
+class Solution {
+    private long comb(int n, int k) {
+        if (k < 0 || k > n) return 0;
+        long res = 1;
+        for (int i = 1; i <= k; i++) {
+            res *= (n - i + 1);
+            res /= i;
+        }
+        return res;
+    }
+
+    public long distributeCandies(int n, int limit) {
+        long total = 0;
+        for (int k = 0; k <= 3; k++) {
+            int sign = (k % 2 == 0) ? 1 : -1;
+            int remaining = n - k * (limit + 1);
+            if (remaining < 0) continue;
+            total += sign * comb(3, k) * comb(remaining + 2, 2);
+        }
+        return total;
+    }
+}
