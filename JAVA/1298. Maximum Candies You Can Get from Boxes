@@ -1,0 +1,54 @@
+import java.util.*;
+
+class Solution {
+
+    public int maxCandies(int[] status, int[] candies, int[][] keys, int[][] containedBoxes, int[] initialBoxes) {
+        int n = status.length;
+        boolean[] seen = new boolean[n];  
+        boolean[] haveKey = new boolean[n]; 
+        boolean[] opened = new boolean[n];  
+        Queue<Integer> queue = new LinkedList<>();
+        
+        for (int box : initialBoxes) {
+            seen[box] = true;
+            queue.offer(box);
+        }
+        
+        int totalCandies = 0;
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            boolean progress = false;
+
+            for (int i = 0; i < size; i++) {
+                int box = queue.poll();
+                
+                if (status[box]==0 && !haveKey[box]) {
+                    queue.offer(box);
+                    continue;
+                }
+
+                if (opened[box]) continue;
+
+                totalCandies += candies[box];
+                opened[box] = true;
+                progress = true;
+
+                for (int k : keys[box]) {
+                    haveKey[k] = true;
+                }
+
+                for (int b : containedBoxes[box]) {
+                    if (!seen[b]) {
+                        queue.offer(b);
+                        seen[b] = true;
+                    }
+                }
+            }
+
+            if (!progress) break; 
+        }
+        
+        return totalCandies;
+    }
+}
