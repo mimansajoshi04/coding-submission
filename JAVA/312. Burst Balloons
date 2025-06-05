@@ -1,0 +1,26 @@
+class Solution {
+    public int maxCoins(int[] nums) {
+        int n = nums.length;
+
+        int[] balloons = new int[n + 2];
+        balloons[0] = 1;
+        balloons[n + 1] = 1;
+        System.arraycopy(nums, 0, balloons, 1, n);
+
+        int[][] dp = new int[n + 2][n + 2];
+
+        for (int length = 1; length <= n; length++) {
+            for (int left = 0; left <= n - length; left++) {
+                int right = left + length + 1;
+
+                for (int k = left + 1; k < right; k++) {
+                    int coins = balloons[left] * balloons[k] * balloons[right];
+                    coins += dp[left][k] + dp[k][right];
+                    dp[left][right] = Math.max(dp[left][right], coins);
+                }
+            }
+        }
+
+        return dp[0][n + 1];
+    }
+}
