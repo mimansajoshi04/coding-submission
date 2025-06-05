@@ -1,0 +1,28 @@
+import java.util.*;
+
+class Solution {
+
+    List<List<Integer>> combos = new ArrayList<>();
+
+    private void findCombos(int[] candidates, int target, int start, List<Integer> combo, int sum){
+        if(sum == target){
+            combos.add(new ArrayList<>(combo));
+            return;
+        }
+
+        for(int i = start; i < candidates.length; i++){
+            int val = candidates[i];
+            if(sum + val > target) continue;
+
+            combo.add(val);
+            findCombos(candidates, target, i, combo, sum + val); 
+            combo.remove(combo.size() - 1);
+        }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates); 
+        findCombos(candidates, target, 0, new ArrayList<>(), 0);
+        return combos;
+    }
+}
