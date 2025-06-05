@@ -1,0 +1,68 @@
+class Solution {
+
+    ArrayList<TreeSet<Character>> pairs = new ArrayList<TreeSet<Character>>();
+
+    private void findSet(char c1, char c2) {
+        TreeSet<Character> mergedSet = new TreeSet<>();
+        Iterator<TreeSet<Character>> iterator = pairs.iterator();
+    
+        while (iterator.hasNext()) {
+            TreeSet<Character> set = iterator.next();
+            if (set.contains(c1) || set.contains(c2)) {
+                mergedSet.addAll(set);
+                iterator.remove();
+            }
+        }
+    
+        mergedSet.add(c1);
+        mergedSet.add(c2);
+    
+        pairs.add(mergedSet);
+    }
+
+
+    private void createPairs(char[] word1, char[] word2, int len){
+
+        for(int i=0;i<len;i++){
+            this.findSet(word1[i], word2[i]);
+        }
+        
+    }
+
+    private char whichCharacter(char c){
+        for (TreeSet<Character> set : pairs) {
+            if (set.contains(c)) {
+                return set.first(); 
+            }
+        }
+        return c; 
+    }
+
+    private String findClosetString(char[] base){
+        int n = base.length;
+        StringBuilder answer = new StringBuilder();
+
+        for (int i = 0; i < n; i++) {
+            answer.append(this.whichCharacter(base[i]));
+        }
+    
+        return answer.toString();
+    }
+
+    private void displaySets(){
+        for(TreeSet<Character> set: pairs){
+            for(char c: set){
+                System.out.print(c + " " + set.size());
+            }
+
+            System.out.println();
+        }
+    }
+    
+    public String smallestEquivalentString(String s1, String s2, String baseStr) {
+        
+        this.createPairs(s1.toCharArray(), s2.toCharArray(), s1.length());
+        //this.displaySets();
+        return this.findClosetString(baseStr.toCharArray());
+    }
+}
