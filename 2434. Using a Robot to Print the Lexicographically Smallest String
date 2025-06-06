@@ -1,0 +1,34 @@
+import java.util.*;
+
+public class Solution {
+    public String robotWithString(String s) {
+        int[] count = new int[26];
+        for (char c : s.toCharArray()) {
+            count[c - 'a']++;
+        }
+
+        StringBuilder result = new StringBuilder();
+        Deque<Character> stack = new ArrayDeque<>();
+
+        int minCharIndex = 0;
+
+        for (char c : s.toCharArray()) {
+            stack.push(c);
+            count[c - 'a']--;
+
+            while (minCharIndex < 26 && count[minCharIndex] == 0) {
+                minCharIndex++;
+            }
+
+            while (!stack.isEmpty() && (stack.peek() - 'a') <= minCharIndex) {
+                result.append(stack.pop());
+            }
+        }
+
+        while (!stack.isEmpty()) {
+            result.append(stack.pop());
+        }
+
+        return result.toString();
+    }
+}
