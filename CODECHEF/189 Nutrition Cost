@@ -1,0 +1,65 @@
+import java.util.*;
+
+class NutritionCost {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int testCases = scanner.nextInt();
+        
+        for (int t = 0; t < testCases; t++) {
+            int itemCount = scanner.nextInt();
+            int vitaminValue = scanner.nextInt();
+            
+            int[] vitamins = new int[itemCount];
+            int[] costs = new int[itemCount];
+            
+            for (int i = 0; i < itemCount; i++) {
+                vitamins[i] = scanner.nextInt();
+            }
+            for (int i = 0; i < itemCount; i++) {
+                costs[i] = scanner.nextInt();
+            }
+            
+            int maxValue = calculateMaxNutritionValue(vitamins, costs, vitaminValue);
+            System.out.println(maxValue);
+        }
+        
+        scanner.close();
+    }
+    
+    private static int calculateMaxNutritionValue(int[] vitamins, int[] costs, int vitaminValue) {
+        Map<Integer, Integer> minCostPerVitamin = getMinCostPerVitamin(vitamins, costs);
+        int maxDistinctVitamins = minCostPerVitamin.size();
+        
+        int[] minCostForCount = new int[maxDistinctVitamins + 1];
+        Arrays.fill(minCostForCount, Integer.MAX_VALUE);
+        minCostForCount[0] = 0; // Base case: 0 cost for 0 vitamins
+        
+        for (int cost : minCostPerVitamin.values()) {
+            for (int k = maxDistinctVitamins; k >= 1; k--) {
+                if (minCostForCount[k - 1] != Integer.MAX_VALUE) {
+                    minCostForCount[k] = Math.min(minCostForCount[k], minCostForCount[k - 1] + cost);
+                }
+            }
+        }
+        
+        int maximumValue = 0;
+        for (int k = 0; k <= maxDistinctVitamins; k++) {
+            if (minCostForCount[k] != Integer.MAX_VALUE) {
+                int currentValue = vitaminValue * k - minCostForCount[k];
+                maximumValue = Math.max(maximumValue, currentValue);
+            }
+        }
+        
+        return maximumValue;
+    }
+    
+    private static Map<Integer, Integer> getMinCostPerVitamin(int[] vitamins, int[] costs) {
+        Map<Integer, Integer> minCostMap = new HashMap<>();
+        for (int i = 0; i < vitamins.length; i++) {
+            int vitamin = vitamins[i];
+            int cost = costs[i];
+            minCostMap.merge(vitamin, cost, Math::min);
+        }
+        return minCostMap;
+    }
+}
