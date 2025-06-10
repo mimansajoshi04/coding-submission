@@ -1,0 +1,37 @@
+class Solution {
+
+    private int difference(HashMap<Character, Integer> map){
+        int odd_max = Integer.MIN_VALUE;
+        int even_min = Integer.MAX_VALUE;
+
+        for(char ch: map.keySet()){
+            int val = map.get(ch);
+
+            if(val%2==1){
+                // odd
+                if(val>odd_max)
+                    odd_max = val;
+                //even
+                
+            }else{
+                if (val<even_min)
+                    even_min = val;
+                
+            }
+        }
+
+        return odd_max-even_min;
+    }
+
+    public int maxDifference(String s) {
+        
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        char[] array = s.toCharArray();
+
+        for(char ch: array)
+            map.put(ch, map.getOrDefault(ch,0)+1);
+
+        return this.difference(map);
+
+    }
+}
