@@ -1,0 +1,32 @@
+class Solution {
+    public int reverse(int x) {
+        boolean was_negative = false;
+
+        if(x<0){
+            was_negative = true;
+            x = x *-1;
+        }
+            
+        long new_num = 0;
+
+        while(x/10>0){
+            new_num = new_num * 10 + x%10;
+            x=x/10;
+        }
+        new_num = new_num * 10 + x;
+
+        if(was_negative){
+            new_num = new_num * -1;
+        }
+
+        if(new_num<Integer.MIN_VALUE || new_num>Integer.MAX_VALUE)
+            return 0;
+        
+        return (int) new_num;
+            
+
+        
+
+
+    }
+}
