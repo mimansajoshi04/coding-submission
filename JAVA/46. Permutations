@@ -1,0 +1,82 @@
+class Solution {
+
+    private int[] nextPermutation(int[] nums, int n){
+        
+        int index = -1;
+
+        for(int i=n-1;i>0;i--){
+            if(nums[i-1]<nums[i]){
+                index = i-1;
+                break;
+            }
+        }
+
+        if(index==-1){
+            Arrays.sort(nums);
+            return nums;
+        }
+
+        for(int i=n-1;i>index;i--){
+            if(nums[i]>nums[index]){
+                var temp = nums[i];
+                nums[i] = nums[index];
+                nums[index] = temp;
+                break;
+            }
+        }
+
+        var start = index+1;
+        var end = n-1;
+
+        while(start<end){
+            var temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            end--;
+            start++;
+        }
+
+        return nums;
+    }
+
+    private int totalCombinations(int n){
+        int fact = n;
+        n--;
+        while(n>0){
+            fact = fact * n;
+            n--;
+        }
+
+        return fact;
+    }
+    
+    private ArrayList<Integer> convert(int nums[]){
+        ArrayList<Integer> list = new ArrayList<Integer>();
+
+        for(int i:nums)
+            list.add(i);
+
+        return list;
+    }
+
+    public List<List<Integer>> permute(int[] nums) {
+        int n = nums.length;
+        int total = this.totalCombinations(n);
+        int count = 1;
+
+        List<List<Integer>> output = new ArrayList<>();
+
+        output.add(this.convert(nums));
+        var next = nums;
+
+        while(count<total){
+            next = this.nextPermutation(next,n);
+            output.add(this.convert(next));
+            count++;
+        }
+
+        return output;
+
+
+    }
+}
