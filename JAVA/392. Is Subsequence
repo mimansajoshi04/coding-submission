@@ -1,0 +1,29 @@
+class Solution {
+    public boolean isSubsequence(String t, String s) {
+        
+        char[] string = s.toCharArray();
+        char[] pattern = t.toCharArray();
+
+        int n = string.length;
+        int m = pattern.length;
+
+        int i=0;
+        int j=0;
+        int count = 0;
+
+        while(i<n && j<m){
+            if(string[i]==pattern[j]){
+                i++;
+                j++;
+                count++;
+            }
+            else
+                i++;
+        }
+
+        if(count==m)
+            return true;
+        return false;
+    
+    }
+}
