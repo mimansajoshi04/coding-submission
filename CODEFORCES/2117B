@@ -1,0 +1,45 @@
+
+import java.util.*;
+
+public final class Main {
+
+    static void findOperations(int n){
+        
+        int[] array = new int[n];
+
+        int start = 0;
+        int end = n-1;
+        int num = 1;
+
+        while(start<end){
+            array[end] = num++;
+            array[start] = num++;
+            start++;
+            end--;
+        }
+
+        if(n%2==1)
+            array[start] = num;
+
+        for(int i:array)
+            System.out.print(i + " ");
+
+        System.out.println();
+        
+    }
+
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+
+        int tests = sc.nextInt();
+
+        while(tests-->0){
+            int n = sc.nextInt();
+
+           findOperations(n);
+        }
+
+
+        sc.close();
+    }
+}
