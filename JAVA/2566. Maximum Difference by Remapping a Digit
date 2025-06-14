@@ -1,0 +1,41 @@
+class Solution {
+    public int minMaxDifference(int num) {
+        char[] array = String.valueOf(num).toCharArray();
+        int n = array.length;
+        int i=0;
+
+        String max = "";
+        String min = "";
+        char minch = array[0];
+
+        while(i<n && array[i]=='9'){
+            if(minch=='9')
+                min += '0';
+            max += '9';
+            i++;
+        }
+
+        if(i==n)
+            return num;
+
+        char ch = array[i];
+
+        for(int j = i;j<n;j++){
+            if(array[j]==ch)
+                max += '9';
+
+            else
+                max += array[j];
+
+
+            if(array[j]==minch)
+                min += '0';
+
+            else
+                min += array[j];
+        }
+
+        return Integer.parseInt(max) - Integer.parseInt(min);
+        
+    }
+}
