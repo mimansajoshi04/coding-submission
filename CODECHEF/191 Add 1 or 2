@@ -1,0 +1,63 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Codechef
+{
+    
+    static void findMinimizedMax(int[] A, int n, Scanner sc){
+        
+        int max = Integer.MIN_VALUE;
+        
+        for(int i = 0;i<n;i++){
+            int val = sc.nextInt();
+            while(val-->0){
+                int min = Integer.MAX_VALUE;
+                int index = -1;
+                for(int j = 0;j<n;j++){
+                    if(j!=i && A[j]<min){
+                        index = j;
+                        min = A[j];
+                    }
+                }
+                
+                if(A[i] + 1<= A[index] + 2){
+                    index = i;
+                    A[index]+=1;
+                }else{
+                    A[index]+=2;
+                }
+                
+                if(A[index]>max)
+                    max = A[index];
+            }
+        }
+        
+        
+        System.out.println(max);
+    }
+    
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+		
+		Scanner sc = new Scanner(System.in);
+		
+		
+		int tests = sc.nextInt();
+		
+		while(tests-->0){
+		    int n = sc.nextInt();
+		    
+		    int[] A = new int[n];
+		    for(int i=0;i<n;i++){
+		        A[i] = sc.nextInt();
+		    }
+		    
+		    findMinimizedMax(A,n,sc);
+		}
+		
+		sc.close();
+
+	}
+}
