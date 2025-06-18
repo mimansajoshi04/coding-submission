@@ -1,0 +1,39 @@
+import java.util.*;
+import java.io.*;
+
+class Codechef {
+    public static void main (String[] args) throws java.lang.Exception {
+        Scanner sc = new Scanner(System.in);
+        int tests = sc.nextInt();
+        
+        while(tests-- > 0){
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            
+            int result;
+            if (x == 0 && y == 0) {
+                result = 4;
+            } else if (gcd(x, y) > 1) {
+                result = 0;
+            } else if (gcd(x + 1, y) > 1 || gcd(x, y + 1) > 1) {
+                result = 1;
+            } else {
+                result = 2;
+            }
+            
+            System.out.println(result);
+        }
+        
+        sc.close();
+    }
+    
+    static int gcd(int a, int b) {
+        if (a == 0 && b == 0) return 0; 
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+}
