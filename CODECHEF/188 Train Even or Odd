@@ -1,0 +1,33 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Codechef
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+		Scanner sc = new Scanner(System.in);
+		
+		int tests = sc.nextInt();
+		
+		while(tests-->0){
+		    int n = sc.nextInt();
+		    int odd = 0;
+		    int even = 0;
+		    
+		    for(int i=0;i<n;i++){
+		        if(i%2==0)
+		            odd+= sc.nextInt();
+		        else
+		            even+=sc.nextInt();
+		    }
+		    
+		    System.out.println(Math.max(odd,even));
+		}
+		
+		
+		sc.close();
+
+	}
+}
