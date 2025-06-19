@@ -1,0 +1,46 @@
+import java.util.*;
+
+class Codechef {
+    
+    static boolean isSubsetDivisibleBy3(int[] array, int n) {
+        boolean[] modPossible = new boolean[3];
+        
+        for (int i = 0; i < n; i++) {
+            boolean[] nextModPossible = Arrays.copyOf(modPossible, 3);
+            
+            int mod = array[i] % 3;
+            nextModPossible[mod] = true;  // single element
+            
+            for (int j = 0; j < 3; j++) {
+                if (modPossible[j]) {
+                    nextModPossible[(j + mod) % 3] = true;
+                }
+            }
+            
+            modPossible = nextModPossible;
+        }
+        
+        return modPossible[0];  
+    }
+    
+    public static void main(String[] args) throws java.lang.Exception {
+        Scanner sc = new Scanner(System.in);
+        int tests = sc.nextInt();
+        
+        while (tests-- > 0) {
+            int n = sc.nextInt();
+            int[] array = new int[n];
+            
+            for (int i = 0; i < n; i++) {
+                array[i] = sc.nextInt();
+            }
+            
+            if (isSubsetDivisibleBy3(array, n))
+                System.out.println("Yes");
+            else
+                System.out.println("No");
+        }
+        
+        sc.close();
+    }
+}
