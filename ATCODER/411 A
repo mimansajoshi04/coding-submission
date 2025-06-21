@@ -1,0 +1,19 @@
+import java.util.Scanner;
+
+public class Main{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        String password = sc.nextLine();
+        int n = password.length();
+
+        if(n>=sc.nextInt())
+            System.out.println("Yes");
+        else
+            System.out.println("No");
+        
+
+
+        sc.close();
+    }
+}
