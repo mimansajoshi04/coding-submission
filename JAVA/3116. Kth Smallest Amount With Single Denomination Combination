@@ -1,0 +1,70 @@
+class Solution {
+    long gcd(long a, long b) 
+    { 
+        if (a == 0L) 
+            return b;  
+        return gcd(b % a, a);  
+    }  
+    // method to return LCM of two numbers 
+    long lcm(long a, long b) 
+    { 
+        return (a / gcd(a, b)) * b; 
+    } 
+    private long multipleTimes(int[] coins, int N,long tar, int k)
+    {
+        long times = 0L;
+        // interation through subsets of the coins array
+        int num_subsets = (1<<N) - 1;
+        for(int i = 1; i <= num_subsets; i++)
+        {
+            int active_bits = 0;
+            long lcm = 1L;
+            for(int ind = 0; ind < N; ind++)
+            {
+                if((i&(1<<ind)) != 0)
+                {
+                    active_bits ++;
+                    lcm = lcm(lcm, (long)coins[ind]);
+                }
+            }
+            // for length 4 -abcd = a + b + c + d -intersection(a,b) -intersection(a,c) .... + intersection(a,b,c) ........ - intersection(a,b,c,d)
+            if(active_bits % 2 == 0)   // remove for the type: ab,ac,ad,bc,bd,cd, abcd
+            {
+                times -= tar/lcm;
+            }else{  // add for the type: a,b,c,d, abc,abd,acd,bcd, ....
+                times += tar/lcm;
+            }
+        }
+        return times;
+    }
+    public long findKthSmallest(int[] coins, int k) {
+        int min = 0;
+        int max = 0;
+        int N = coins.length;
+        for(int ele: coins)
+        {
+            min = Math.min(min, ele);
+            max = Math.max(max, ele);
+        }
+        long low = min;
+        long high = (long)max * k;
+        long ans = high;
+        
+        while(low <= high)
+        {
+            long mid = low + (high - low)/2L;
+            long times = multipleTimes(coins, N, mid, k);
+            if(times == k)
+            {
+                ans = mid;
+            }
+            if(times < k)
+            {
+                low = mid + 1;
+            }else{
+                high = mid -1;
+            }
+        }
+        return ans;
+    }
+}
