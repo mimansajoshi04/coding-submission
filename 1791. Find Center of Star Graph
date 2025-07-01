@@ -1,0 +1,20 @@
+class Solution {
+    public int findCenter(int[][] edges) {
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(int[] edge: edges ){
+            var v1 = edge[0];
+            var v2 = edge[1];
+
+            map.put(v1, map.getOrDefault(v1,0) + 1);
+            map.put(v2, map.getOrDefault(v2,0) + 1);
+        }
+
+        int n = map.size()-1;
+        for(int i: map.keySet()){
+            if(n== map.get(i))
+                return i;
+        }
+
+        return 0;
+    }
+}
