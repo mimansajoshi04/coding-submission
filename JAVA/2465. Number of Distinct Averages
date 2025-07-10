@@ -1,0 +1,15 @@
+class Solution {
+    public int distinctAverages(int[] nums) {
+        Arrays.sort(nums);
+        int i = 0;
+        int j = nums.length-1;
+
+        Set<Double> set = new HashSet<Double>();
+
+        while(i<j){
+            set.add( ( ((double) nums[i++] ) + nums[j--] )/2 );
+        }
+
+        return set.size();
+    }
+}
