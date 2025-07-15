@@ -1,0 +1,34 @@
+class Solution {
+    public boolean isValid(String word) {
+        
+        char[] ch = word.toLowerCase().toCharArray();
+
+        boolean len = false;
+        boolean alphanumeric = false;
+        boolean vowel = false;
+        boolean consonant = false;
+
+        if(ch.length>2){
+            len = true;
+            for(char c: ch){
+                if((c>=97 && c<=122) || (c>=48 && c<=57)){
+                    alphanumeric = true;
+                    if(c>57){
+                        if(c=='a' || c=='e' || c=='i'  || c=='o'  || c=='u' ){
+                            vowel = true;
+                        }else{
+                            consonant = true;
+                        }
+                    }
+                }else{
+                    alphanumeric = false;
+                    break;
+                }
+            }
+        }
+
+        return (len && vowel && consonant && alphanumeric);
+        
+
+    }
+}
