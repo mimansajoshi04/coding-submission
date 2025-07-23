@@ -1,0 +1,50 @@
+class Solution {
+
+    class Cell {
+        int x, y;
+        Cell(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    private void markComponent(char[][] grid, int x, int y, int m, int n, boolean[][] visited) {
+        Queue<Cell> queue = new LinkedList<>();
+        visited[x][y] = true;
+        queue.add(new Cell(x, y));
+
+        while (!queue.isEmpty()) {
+            Cell curr = queue.poll();
+
+            int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+            for (int[] dir : dirs) {
+                int nx = curr.x + dir[0];
+                int ny = curr.y + dir[1];
+                if (nx >= 0 && ny >= 0 && nx < m && ny < n &&
+                    grid[nx][ny] == '1' && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    queue.add(new Cell(nx, ny));
+                }
+            }
+        }
+    }
+
+    public int numIslands(char[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int islands = 0;
+
+        boolean[][] visited = new boolean[m][n];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j] && grid[i][j] == '1') {
+                    markComponent(grid, i, j, m, n, visited);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+}
