@@ -1,0 +1,92 @@
+class Solution {
+
+    HashMap<String, Integer> map = new HashMap<String, Integer>();
+    double[][] graph;
+    int m;
+
+    class Node{
+        int val;
+        double prod;
+
+        Node(int val, double prod){
+            this.val = val;
+            this.prod = prod;
+        }
+    }
+
+    private void createGraph(List<List<String>> equations, double[] values){
+        int n = values.length;
+        int v = 0;
+
+        for(int i=0;i<n;i++){
+            var list = equations.get(i);
+            String s1 = list.get(0);
+            String s2 = list.get(1);
+
+            if(!map.containsKey(s1)){
+                map.put(s1,v++);
+            }
+
+            if(!map.containsKey(s2)){
+                map.put(s2,v++);
+            }
+        }
+
+        m = map.size();
+        graph = new double[m][m];
+
+        for(int k=0;k<n;k++){
+            var list = equations.get(k);
+            int i = map.get(list.get(0));
+            int j = map.get(list.get(1));
+
+            graph[i][j] = values[k];
+            if(values[k]!=0)
+                graph[j][i] = (1/values[k]);
+        }
+    }
+
+    private double findDistance(int start, int end){
+
+        if(start==m|| end==m)
+            return -1.0;
+
+        boolean visited[] = new boolean[m];
+        Queue<Node> queue = new LinkedList<Node>();
+
+        visited[start] = true;
+        queue.add(new Node(start, 1.0));
+
+        while(!queue.isEmpty()){
+            Node curr = queue.poll();
+            if(curr.val==end)
+                return curr.prod;
+            
+            for(int i=0;i<m;i++){
+                if(!visited[i] && graph[curr.val][i]!=0){
+                    visited[i] = true;
+                    queue.add(new Node(i, curr.prod * graph[curr.val][i] ));
+                }
+            }
+        }
+
+        return -1.0;
+        
+
+    }
+
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        this.createGraph(equations, values);
+        int n = queries.size();
+
+        double answer[] = new double[n];
+
+        int i = 0;
+        for(var q: queries){
+            answer[i] = Math.max( -1.0, this.findDistance( map.getOrDefault(q.get(0),m) , map.getOrDefault(q.get(1),m) ) );
+            i++;
+        }
+
+        return answer;   
+    }
+}
