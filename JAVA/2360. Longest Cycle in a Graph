@@ -1,0 +1,58 @@
+class Solution {
+
+    private int findCycleLen(int[] outgoing, boolean visited[], int startind, int ind){
+
+        if(outgoing[ind]==-1 && visited[ind])
+            return -1;
+         
+        if(visited[ind] && ind==startind)
+            return 0;
+
+        if(visited[ind] && ind!=startind)
+            return -1;
+        
+        visited[ind] = true;
+        int len = 1 + findCycleLen(outgoing, visited, startind, outgoing[ind]);
+        
+
+        if(len==0){
+            visited[ind] = false;
+            return -1;
+        }
+        return len;
+
+    }
+
+
+    public int longestCycle(int[] edges) {
+        int n = edges.length;
+
+        int incomingEdges[] = new int[n];
+        boolean[] visited = new boolean[n];
+
+        for(int i=0;i<n;i++){
+            if(edges[i]!=-1)
+                incomingEdges[edges[i]]++;
+            else{
+                visited[i] = true;
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            if(incomingEdges[i]==0)
+                visited[i] = true;
+        }
+        
+        int cycle = -1;
+
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                int len = findCycleLen(edges, visited, i, i);
+                if(len>cycle)
+                    cycle = len;
+            } 
+        }
+
+        return cycle;
+    }
+}
