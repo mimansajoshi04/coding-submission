@@ -1,0 +1,22 @@
+class Solution {
+    public int edgeScore(int[] edges) {
+        int n = edges.length;
+
+        long countScore[] = new long[n];
+
+        for(int i=0;i<n;i++)
+            countScore[edges[i]]+=i;
+
+        long max = Long.MIN_VALUE;
+        int ind = -1;
+
+        for(int i=0;i<n;i++){
+            if(countScore[i]>max){
+                max = countScore[i];
+                ind = i;   
+            }
+        }
+
+        return ind;
+    }
+}
