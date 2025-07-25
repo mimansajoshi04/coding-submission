@@ -1,0 +1,95 @@
+class LockingTree {
+    private final Map<Integer, TreeNode> nodes;
+    private final int[] parent, locked;
+
+    public LockingTree(final int[] parent) {
+        this.nodes = new HashMap<>();
+        this.parent = parent;
+        this.locked = new int[parent.length];
+
+        Arrays.fill(locked, -1);
+
+        nodes.put(0, new TreeNode(0));
+
+        for(int i = 1; i < parent.length; ++i) {
+            nodes.putIfAbsent(parent[i], new TreeNode(parent[i]));
+            nodes.putIfAbsent(i, new TreeNode(i));
+
+            nodes.get(parent[i]).children.add(nodes.get(i));
+        }
+    }
+    
+    public boolean lock(final int num, final int user) {
+        if(locked[num] > -1)
+            return false;
+
+        locked[num] = user;
+
+        return true;
+    }
+    
+    public boolean unlock(final int num, final int user) {
+        if(locked[num] == -1 || locked[num] != user)
+            return false;
+
+        locked[num] = -1;
+
+        return true;
+    }
+    
+    public boolean upgrade(final int num, final int user) {
+        if(!nodes.containsKey(num))
+            return false;
+
+        int i = num;
+
+        while(i > -1) {
+            if(locked[i] > -1)
+                return false;
+
+            i = parent[i];
+        }
+
+        final Queue<TreeNode> queue = new LinkedList<>();
+
+        queue.offer(nodes.get(num));
+
+        boolean upgraded = false;
+
+        while(!queue.isEmpty()) {
+            final TreeNode curr = queue.poll();
+
+            for(final TreeNode child : curr.children) {
+                if(locked[child.num] > -1)
+                    upgraded = true;
+                
+                locked[child.num] = -1;
+
+                queue.offer(child);
+            }
+        }
+
+        if(upgraded)
+            lock(num, user);
+
+        return upgraded;
+    }
+
+    private final class TreeNode {
+        public final int num;
+        public List<TreeNode> children;
+
+        public TreeNode(final int num) {
+            this.num = num;
+            this.children = new ArrayList<>();
+        }
+    }
+}
+
+/**
+ * Your LockingTree object will be instantiated and called as such:
+ * LockingTree obj = new LockingTree(parent);
+ * boolean param_1 = obj.lock(num,user);
+ * boolean param_2 = obj.unlock(num,user);
+ * boolean param_3 = obj.upgrade(num,user);
+ */
