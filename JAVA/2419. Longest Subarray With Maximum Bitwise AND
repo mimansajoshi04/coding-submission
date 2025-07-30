@@ -1,0 +1,111 @@
+class Solution {
+
+    // private class Num{
+    //     private int left;
+    //     private int right;
+    //     private int value;
+        
+    //     Num(){}
+
+    //     Num(int left,int right, int value){
+    //         this.left = left;
+    //         this.right = right;
+    //         this.value = value;
+    //     }
+
+    //     public int getLeft(){
+    //         return this.left;
+    //     }
+
+    //     public int getRight(){
+    //         return this.right;
+    //     }
+
+    //     public int getValue(){
+    //         return this.value;
+    //     }
+    // }
+
+    // private Num crossSubarray(int nums[], int left, int right, int mid){
+    //     int leftAnd = nums[left];
+    //     int l = mid;
+    //     for(int i=mid-1;i>=left;i--){
+
+    //         if( (nums[i] & leftAnd )> leftAnd){
+    //             leftAnd = nums[i]&leftAnd;
+    //             l = i;
+    //         }else if( (nums[i] & leftAnd) ==0)
+    //             break;
+
+    //     }
+
+    //     int rightAnd = nums[mid+1];
+    //     int r = mid+1;
+    //     for(int i= mid+2;i<right+1;i++){
+    //         if( (nums[i] & rightAnd) > rightAnd){
+    //             rightAnd = rightAnd&nums[i];
+    //             r = i;
+    //         }else if( (nums[i] & rightAnd) ==0)
+    //             break;
+    //     }
+
+    //     return new Num(l,r,leftAnd & rightAnd);
+    // }
+
+
+    // private Num maximumSubarray(int nums[], int left, int right){
+    //     if(left == right)
+    //         return new Num(left,right,nums[left]);
+
+    //     int mid = (left+right)/2;
+
+    //     var leftNode = this.maximumSubarray(nums,left,mid);
+    //     var rightNode = this.maximumSubarray(nums,mid+1,right);
+    //     var crossOver = this.crossSubarray(nums,left,right,mid);
+
+    //     if(leftNode.value>rightNode.value && leftNode.value>crossOver.value)
+    //         return leftNode;
+
+    //     else if(rightNode.value>leftNode.value && rightNode.value>crossOver.value)
+    //         return rightNode;
+
+    //     return crossOver;
+    // }
+
+    // public int longestSubarray(int[] nums) {
+    //     var node = this.maximumSubarray(nums,0,nums.length-1);
+    //     System.out.println(node.left + " " + node.right);
+    //     for(int i = node.left;i<=node.right;i++)    
+    //         System.out.println(nums[i]);
+    //     return node.right - node.left + 1;
+        
+    // }
+
+    public int longestSubarray(int[] nums) {
+        // Step 1: Find the maximum value in the array
+        int maxVal = nums[0];
+        for (int num : nums) {
+            maxVal = Math.max(maxVal, num);
+        }
+
+        // Step 2: Find the longest subarray where all elements equal to maxVal
+        int maxLength = 0;
+        int currentLength = 0;
+
+        for (int num : nums) {
+            if (num == maxVal) {
+                // Extend the current subarray
+                currentLength++;
+            } else {
+                // Reset the current subarray length
+                maxLength = Math.max(maxLength, currentLength);
+                currentLength = 0;
+            }
+        }
+
+        // Final check in case the longest subarray ends at the last element
+        maxLength = Math.max(maxLength, currentLength);
+
+        return maxLength;
+    }
+}
