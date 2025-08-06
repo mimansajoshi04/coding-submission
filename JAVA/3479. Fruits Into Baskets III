@@ -1,0 +1,90 @@
+class Solution {
+    public int numOfUnplacedFruits(int[] fruits, int[] baskets) {
+        int result = fruits.length;
+        int[] tree = createTree(baskets.length);
+
+        addArray(tree, baskets);
+        calculateTree(tree);
+
+        for (int fruit : fruits) {
+            int pos = findLetmostPos(tree, fruit);
+            if (pos >= 0) {
+                result --;
+                removePos(tree, pos);
+            }
+        }
+
+        return result;
+    }
+
+    private int[] createTree(int itemsCount) {
+        int treeSize = Integer.highestOneBit(itemsCount);
+
+        if (treeSize < itemsCount) {
+            treeSize <<= 1;
+        }
+
+        treeSize = (treeSize << 1) - 1;
+
+        return new int[treeSize];
+    }
+
+    private void addArray(int[] tree, int[] arr) {
+        int pos = (tree.length / 2);
+
+        for (int item : arr) {
+            tree[pos ++] = item;
+        }
+    }
+
+    private void calculateTree(int[] tree) {
+        for (int i = (tree.length / 2) - 1; i >= 0; i --) {
+            int left = tree[(i << 1) + 1];
+            int right = tree[(i << 1) + 2];
+            tree[i] = Math.max(left, right);
+        }
+    }
+
+    private int findLetmostPos(int[] tree, int val) {
+        if (tree[0] < val) {
+            return -1;
+        }
+
+        int mid = tree.length / 2;
+        int pos = 0;
+
+        while (pos < mid) {
+            int left = tree[(pos << 1) + 1];
+            if (left >= val) {
+                pos = (pos << 1) + 1;
+            } else {
+                pos = (pos << 1) + 2;
+            }
+        }
+
+        return pos;
+    }
+
+    private void removePos(int[] tree, int pos) {
+        tree[pos] = 0;
+
+        while (pos > 0) {
+            if ((pos & 1) == 1) {
+                pos = (pos >> 1);
+            } else {
+                pos = (pos >> 1) - 1;
+            }
+
+            int left = tree[(pos << 1) + 1];
+            int right = tree[(pos << 1) + 2];
+
+            int max = Math.max(left, right);
+
+            if (tree[pos] != max) {
+                tree[pos] = max;
+            } else {
+                break;
+            }
+        }
+    }
+}
