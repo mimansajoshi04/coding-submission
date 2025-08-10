@@ -1,0 +1,39 @@
+class Solution {
+
+    private int[] digitFrequency(int n){
+        int[] freq = new int[10];
+
+        while(n > 0){
+            int digit = n % 10;
+            freq[digit]++;
+            n = n / 10;
+        }
+
+        return freq;
+    }
+
+    private boolean equalFreq(int[] num1, int[] num2){
+        for(int i = 0; i < 10; i++){
+            if(num1[i] != num2[i])
+                return false;
+        }
+
+        return true;
+    }
+
+    public boolean reorderedPowerOf2(int n) {
+        int[] givenFreq = digitFrequency(n);
+        int numDigits = String.valueOf(n).length();
+
+        int val = 1;
+        while (String.valueOf(val).length() <= numDigits) {
+            if (String.valueOf(val).length() == numDigits &&
+                equalFreq(givenFreq, digitFrequency(val)))
+                return true;
+
+            val = val * 2;
+        }
+
+        return false;
+    }
+}
