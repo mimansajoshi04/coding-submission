@@ -1,0 +1,21 @@
+class Solution {
+    public long zeroFilledSubarray(int[] nums) {
+        int n = nums.length;
+        int len = 0;
+        long count = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != 0) {
+                count += (long) len * (len + 1) / 2;
+                len = 0;
+            } else {
+                len++;
+            }
+        }
+
+        if (len > 0)
+            count += (long) len * (len + 1) / 2;
+
+        return count;
+    }
+}
