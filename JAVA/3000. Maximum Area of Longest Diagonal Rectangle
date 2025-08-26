@@ -1,0 +1,22 @@
+class Solution {
+    public int areaOfMaxDiagonal(int[][] dimensions) {
+        double maxDiag = Double.MIN_VALUE;
+        int area = 0;
+        
+        for(int[] arr: dimensions){
+            int l = arr[0];
+            int b = arr[1];
+
+            double diag = Math.sqrt(l*l+b*b);
+            if(diag>maxDiag){
+                maxDiag = diag;
+                area = l*b;
+            }else if(diag==maxDiag){
+                area = Math.max(area, l*b);
+            }
+        }
+
+        return area;
+
+    }
+}
