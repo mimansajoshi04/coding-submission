@@ -1,0 +1,59 @@
+class Solution {
+    public boolean checkRow(char[][] board, int m, int n, int x, int y){
+        for(int i=0;i<m;i++){
+            if(board[i][y]!='.' && board[i][y]==board[x][y])
+                if(i!=x)
+                    return false;
+        }    
+
+        return true;
+    }
+
+    public boolean checkCol(char[][] board, int m, int n, int x, int y){
+        for(int i=0;i<n;i++){
+            if(board[x][i]!='.' && board[x][i]==board[x][y])
+                if(i!=y)
+                    return false;
+        }    
+
+        return true;
+    }
+
+    public boolean checkBoard(char[][] board, int m, int n, int x, int y){
+        int rowStart = (x/3)*3;
+        int colStart = (y/3)*3;
+        int rowEnd = rowStart + 3;
+        int colEnd = colStart + 3;
+
+        for(int i=rowStart;i<rowEnd;i++){
+            for(int j=colStart;j<colEnd;j++){
+                if(board[i][j]!='.' && board[i][j]==board[x][y]){
+                    if(i!=x && j!=y)
+                        return false;
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    public boolean isValidSudoku(char[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+        
+        for(int i = 0; i< m;i++){
+            for(int j = 0;j<n;j++){
+                if(board[i][j]!='.'){
+                    if(!checkRow(board,m,n,i,j))
+                        return false;
+                    if(!checkCol(board,m,n,i,j))
+                        return false;
+                    if(!checkBoard(board,m,n,i,j))
+                        return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
