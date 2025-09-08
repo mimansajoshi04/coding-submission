@@ -1,0 +1,30 @@
+class Solution {
+
+    private boolean isNoZeroInteger(int n){
+        while(n>0){
+            if(n%10==0)
+                return false;
+            n = n/10;
+        }
+
+        return true;
+    }
+
+    public int[] getNoZeroIntegers(int n) {
+        
+        int[] output = new int[2];
+        for(int i=1;i<n;i++){
+            int a = i;
+            int b = n-i;
+
+            if(isNoZeroInteger(a) && isNoZeroInteger(b)){
+                output[0] = a;
+                output[1] = b;
+                break;
+            }
+        }
+
+        return output;
+
+    }
+}
