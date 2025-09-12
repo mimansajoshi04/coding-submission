@@ -1,0 +1,73 @@
+class Solution {
+
+    class Score{
+        private boolean result;
+        private int index;
+
+        Score(int index, boolean result){
+            this.index = index;
+            this.result = result;
+        }
+
+        public boolean getResult(){
+            return this.result;
+        }
+
+        public int getNextIndex(){
+            return this.index;
+        }
+    }
+
+    private boolean isVowel(char ch){
+        return "aeiouAEIOU".indexOf(ch) != -1;
+    }
+
+    private Score playGame(char[] string, int n, int curr_index, int player){
+        int len_vowels = 0;
+        int curr = -1;
+        int mod;
+
+        if(player == 1)
+            mod = 1;
+        else
+            mod = 0;
+
+        for(int i=curr_index;i<n;i++){
+            if(isVowel(string[i])){
+                len_vowels++;
+                if(len_vowels%2 == mod){
+                    curr = i;
+                }
+            }
+        }
+
+        if(curr==-1)
+            return new Score(curr, false);
+        return new Score(curr+1, true);
+    }
+
+    public boolean doesAliceWin(String s) {
+        char[] string = s.toCharArray();
+        int n = string.length;
+
+        int curr_index = 0;
+
+        while(true){
+            if(curr_index>=n)
+                break;
+            
+            Score aliceWin = playGame(string, n, curr_index, 1);
+            if(aliceWin.getResult()){
+                curr_index = aliceWin.getNextIndex();
+                Score bobplay = playGame(string, n, curr_index, 2);
+                if(!bobplay.getResult())
+                    return true;
+                curr_index = bobplay.getNextIndex();
+            }else{
+                return false;
+            }
+        }
+
+        return false;
+    }
+}
