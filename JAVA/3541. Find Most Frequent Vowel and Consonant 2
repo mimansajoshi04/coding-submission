@@ -1,0 +1,26 @@
+class Solution {
+
+    private boolean isVowel(char ch){
+        return "aeiouAEIOU".indexOf(ch) != -1;
+    }
+
+    public int maxFreqSum(String s) {
+        char[] string = s.toCharArray();
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+
+        int max_vow = 0;
+        int max_con = 0;
+
+        for(int i=0;i<string.length;i++){
+            int freq = map.getOrDefault(string[i], 0) + 1;
+            map.put(string[i], freq);
+
+            if(isVowel(string[i]))
+                max_vow = Math.max(max_vow, freq);
+            else
+                max_con = Math.max(max_con, freq);
+        }
+
+        return max_vow + max_con;
+    }
+}
