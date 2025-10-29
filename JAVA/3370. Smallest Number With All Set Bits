@@ -1,0 +1,17 @@
+class Solution {
+
+    private int logbase2(int n){
+        double num = Math.log(n);
+        double deno = Math.log(2);
+
+        double value = Math.floor(num/deno);
+
+        return (int) value;
+    }
+
+    public int smallestNumber(int n) {
+        int logvalue = logbase2(n);
+
+        return (int) Math.pow(2, logvalue+1) -1;
+    }
+}
