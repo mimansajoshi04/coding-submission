@@ -1,0 +1,75 @@
+import java.util.*;
+
+class Solution {
+    public int[] processQueries(int c, int[][] connections, int[][] queries) {
+        List<Integer>[] graph = new ArrayList[c + 1]; // 1-based indexing
+        for (int i = 1; i <= c; i++) graph[i] = new ArrayList<>();
+
+        for (int[] conn : connections) {
+            graph[conn[0]].add(conn[1]);
+            graph[conn[1]].add(conn[0]);
+        }
+
+        int[] component = new int[c + 1];
+        int compId = 0;
+        for (int i = 1; i <= c; i++) {
+            if (component[i] == 0) {
+                compId++;
+                dfs(i, compId, component, graph);
+            }
+        }
+
+        Map<Integer, TreeSet<Integer>> compToOnline = new HashMap<>();
+        for (int i = 1; i <= c; i++) {
+            int comp = component[i];
+            compToOnline.putIfAbsent(comp, new TreeSet<>());
+            compToOnline.get(comp).add(i);
+        }
+
+        List<Integer> res = new ArrayList<>();
+        boolean[] isOffline = new boolean[c + 1];
+
+        for (int[] q : queries) {
+            int type = q[0];
+            int x = q[1];
+
+            if (type == 1) { 
+                if (!isOffline[x]) {
+                    res.add(x);
+                } else {
+                    int comp = component[x];
+                    TreeSet<Integer> onlineSet = compToOnline.get(comp);
+                    if (onlineSet.isEmpty()) {
+                        res.add(-1);
+                    } else {
+                        res.add(onlineSet.first());
+                    }
+                }
+            } else if (type == 2) {
+                if (!isOffline[x]) {
+                    isOffline[x] = true;
+                    int comp = component[x];
+                    compToOnline.get(comp).remove(x);
+                }
+            }
+        }
+
+        return res.stream().mapToInt(i -> i).toArray();
+    }
+
+    private void dfs(int node, int compId, int[] component, List<Integer>[] graph) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(node);
+        component[node] = compId;
+
+        while (!stack.isEmpty()) {
+            int curr = stack.pop();
+            for (int neighbor : graph[curr]) {
+                if (component[neighbor] == 0) {
+                    component[neighbor] = compId;
+                    stack.push(neighbor);
+                }
+            }
+        }
+    }
+}
