@@ -1,0 +1,42 @@
+class Solution {
+
+    private Integer[][][] memo;
+
+    private int largestSubsetMemo(int[][] aboutString, int i, int m, int n) {
+        if (i == aboutString.length) return 0;
+
+        if (memo[i][m][n] != null) return memo[i][m][n];
+
+        int zeros = aboutString[i][0];
+        int ones = aboutString[i][1];
+
+        int notTake = largestSubsetMemo(aboutString, i + 1, m, n);
+        int take = 0;
+        if (m >= zeros && n >= ones) {
+            take = 1 + largestSubsetMemo(aboutString, i + 1, m - zeros, n - ones);
+        }
+
+        return memo[i][m][n] = Math.max(take, notTake);
+    }
+
+    private int[][] findOccurrences(String[] strs) {
+        int[][] aboutString = new int[strs.length][2];
+        for (int i = 0; i < strs.length; i++) {
+            int zeros = 0, ones = 0;
+            for (char ch : strs[i].toCharArray()) {
+                if (ch == '0') zeros++;
+                else if (ch == '1') ones++;
+            }
+            aboutString[i][0] = zeros;
+            aboutString[i][1] = ones;
+        }
+        return aboutString;
+    }
+
+    public int findMaxForm(String[] strs, int m, int n) {
+        int[][] aboutString = findOccurrences(strs);
+        int len = strs.length;
+        memo = new Integer[len][m + 1][n + 1];
+        return largestSubsetMemo(aboutString, 0, m, n);
+    }
+}
